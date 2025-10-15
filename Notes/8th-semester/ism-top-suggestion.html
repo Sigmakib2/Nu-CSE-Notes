@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ism-top-suggestion.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Below is your <strong>chapter-wise categorized list</strong> of <em>all questions</em> from Dhaka City College, Sheikh Borhanuddin Post Graduate College, and the previous two Information System Management exam papers.</p>
+<h1 id="%F0%9F%93%98-information-system-management-%E2%80%93-chapter-wise-question-bank-updated--complete">📘 <strong>INFORMATION SYSTEM MANAGEMENT – CHAPTER-WISE QUESTION BANK (Updated &amp; Complete)</strong></h1>
+<hr>
+<h2 id="%F0%9F%A7%A9-chapter-1-fundamentals-of-information-systems--is-management">🧩 <strong>Chapter 1: Fundamentals of Information Systems &amp; IS Management</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+information+system+management+Explain+benefits+of+information+system+management.">What is information system management? Explain benefits of information system management.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+information+system+Define+event,+data,+and+business+information.">What is information system? Define event, data, and business information.</a></li>
+<li><a href="https://www.google.com/search?q=Why+is+IS+management+important+for+business+success">Why is IS management important for business success?</a></li>
+<li><a href="https://www.google.com/search?q=List+out+some+roles+of+information+system+within+an+organization.">List out some roles of information system within an organization.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+challenges+in+information+system+management+Describe+three+major+themes+of+ISM+challenges+in+today%E2%80%99s+business+world.">What are the challenges in information system management? Describe three major themes of ISM challenges in today’s business world.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+strategies+and+goals+organizations+are+setting+to+cope+up+with+the+changes+in+external+and+internal+organizational+work+environment">What are the strategies and goals organizations are setting to cope up with the changes in external and internal organizational work environment?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+four+elements+one+should+consider+to+construct+a+better+model+for+IS+function+Describe+these+elements+in+details.">What are the four elements one should consider to construct a better model for IS function? Describe these elements in details.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+trends+in+technological+environment+which+are+shaping+ISM+nowadays">What are the trends in technological environment which are shaping ISM nowadays?</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+usefulness+of+strategic+use+of+IT+in+G2P+sector.">Describe the usefulness of strategic use of IT in G2P sector.</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%A0-chapter-2-management-information-systems-mis">🧠 <strong>Chapter 2: Management Information Systems (MIS)</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+Management+Information+System+(MIS)+Why+do+you+need+to+study+MIS">What is Management Information System (MIS)? Why do you need to study MIS?</a></li>
+<li><a href="https://www.google.com/search?q=Write+the+characteristics+of+Management+Information+System.">Write the characteristics of Management Information System.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+impact+of+AI+in+MIS.">Describe the impact of AI in MIS.</a></li>
+<li><a href="https://www.google.com/search?q=Compare+MIS+and+DSS.">Compare MIS and DSS.</a></li>
+<li><a href="https://www.google.com/search?q=Write+down+the+differences+between+MIS+and+DSS.">Write down the differences between MIS and DSS.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+telecommunication,+and+what+is+its+role+in+MIS">What is telecommunication, and what is its role in MIS?</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%8F%A2-chapter-3-information-systems-in-organizations">🏢 <strong>Chapter 3: Information Systems in Organizations</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=Describe+the+Cox+Model+for+information+system.">Describe the Cox Model for information system.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+how+Cox%E2%80%99s+model+can+be+utilized+to+understand+the+roles+of+IT+in+organizations.+Describe+Cox+model+in+four+stages.">Describe how Cox’s model can be utilized to understand the roles of IT in organizations. Describe Cox model in four stages.</a></li>
+<li><a href="https://www.google.com/search?q=Who+is+CIO+What+are+the+responsibilities+of+a+CIO+in+managing+IT">Who is CIO? What are the responsibilities of a CIO in managing IT?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+five+new+roles+IT+is+playing+right+now+in+business+organizations">What are the five new roles IT is playing right now in business organizations?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+three+different+strategic+uses+of+IT+in+business">What are the three different strategic uses of IT in business?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+strategic+uses+of+IT+(B2E,+B2C,+B2B,+G2P)">What are the strategic uses of IT (B2E, B2C, B2B, G2P)?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+differences+between+IT-based+management+system+and+traditional+management+system">What are the differences between IT-based management system and traditional management system?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+technique+for+critical+success+factor.">What is success factor? Describe the planning technique for critical success factor.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+critical+for+success+factor.">What is success factor? Describe the planning critical for success factor.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+Roger+Woolfe%E2%80%99s+model+to+predict+cost+of+IT+integration+and+risk+pyramid+in+correspondence+to+B2B+relationship+intimacy+level.">Describe Roger Woolfe’s model to predict cost of IT integration and risk pyramid in correspondence to B2B relationship intimacy level.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+Roger+Woolfe%E2%80%99s+Federal+Model+for+outsourcing.">Describe Roger Woolfe’s Federal Model for outsourcing.</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%AD-chapter-4-planning-strategy--success-factors">🧭 <strong>Chapter 4: Planning, Strategy &amp; Success Factors</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+IS+planning+Why+planning+paradox+IS+is+so+important">What is IS planning? Why planning paradox IS is so important?</a></li>
+<li><a href="https://www.google.com/search?q=Discuss+the+differences+among+strategic,+tactical,+and+operational+planning.">Discuss the differences among strategic, tactical, and operational planning.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+different+types+of+planning+techniques.">Describe different types of planning techniques.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+technique+for+critical+success+factor.">What is success factor? Describe the planning technique for critical success factor.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+value+chain+analysis+technique.">Describe value chain analysis technique.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+critical+for+success+factor.+(repeat+from+other+set)">What is success factor? Describe the planning critical for success factor. (repeat from other set)</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+technique+for+critical+success+factor.+(combined+phrasing)">What is success factor? Describe the planning technique for critical success factor. (combined phrasing)</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%92%BE-chapter-5-distributed-systems-data-warehousing--erp">💾 <strong>Chapter 5: Distributed Systems, Data Warehousing &amp; ERP</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=Define+distributed+system.+Explain+different+types+of+distributed+systems.">Define distributed system. Explain different types of distributed systems.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+types+of+distributed+system">What are the types of distributed system?</a></li>
+<li><a href="https://www.google.com/search?q=Describe+attributes+of+distributed+system.">Describe attributes of distributed system.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+steps+in+data+warehousing+project">What are the steps in data warehousing project?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+a+data+warehouse,+and+what+are+its+main+steps+and+benefits">What is a data warehouse, and what are its main steps and benefits?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+Enterprise+Resource+Planning+(ERP)+Describe+the+benefits+of+ERP.">What is Enterprise Resource Planning (ERP)? Describe the benefits of ERP.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+ERP,+and+how+does+it+benefit+organizations">What is ERP, and how does it benefit organizations?</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+phases+of+system+development.">Describe the phases of system development.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+middleware+system+integration+and+inter-organizational+system+development.">Describe middleware system integration and inter-organizational system development.</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%B1-chapter-6-system-development--project-management">🧱 <strong>Chapter 6: System Development &amp; Project Management</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+system+development+Describe+the+phases+of+system+development.">What is system development? Describe the phases of system development.</a></li>
+<li><a href="https://www.google.com/search?q=Who+is+project+management+What+are+the+responsibilities+of+business+project+managers">Who is project management? What are the responsibilities of business project managers?</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+phases+of+system+development.">Describe the phases of system development.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+success+factor+Describe+the+planning+critical+for+success+factor.">What is success factor? Describe the planning critical for success factor.</a></li>
+<li><a href="https://www.google.com/search?q=Write+short+notes+on:">Write short notes on:</a>
+(i) Structured development
+(ii) Computer-aided software engineering (CASE).</li>
+</ol>
+<hr>
+<h2 id="%E2%98%81%EF%B8%8F-chapter-7-cloud-computing--modern-it-roles">☁️ <strong>Chapter 7: Cloud Computing &amp; Modern IT Roles</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+cloud+computing+Write+down+the+characteristics+of+cloud+computing.">What is cloud computing? Write down the characteristics of cloud computing.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+cloud+computing,+and+what+are+its+characteristics">What is cloud computing, and what are its characteristics?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+business+intelligence+How+it+is+related+to+database+technology">What is business intelligence? How it is related to database technology?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+expert+system+What+are+types+of+expert+system">What is expert system? What are types of expert system?</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%AE-chapter-8-decision-support-systems-dss-intelligence--knowledge-management">🧮 <strong>Chapter 8: Decision Support Systems (DSS), Intelligence &amp; Knowledge Management</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=What+is+decision-support-system+What+are+the+characteristics+of+DSS">What is decision-support-system? What are the characteristics of DSS?</a></li>
+<li><a href="https://www.google.com/search?q=Compare+MIS+and+DSS.">Compare MIS and DSS.</a></li>
+<li><a href="https://www.google.com/search?q=Write+short+note+on+group+decision+support+system.">Write short note on group decision support system.</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+benefits+of+using+intelligence+techniques+for+knowledge+management">What are the benefits of using intelligence techniques for knowledge management?</a></li>
+<li><a href="https://www.google.com/search?q=What+is+knowledge+management+How+does+it+promote+organizational+learning">What is knowledge management? How does it promote organizational learning?</a></li>
+<li><a href="https://www.google.com/search?q=Describe+on+content+management+system.">Describe on content management system.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+content+management+system.">Describe the content management system.</a></li>
+<li><a href="https://www.google.com/search?q=What+do+you+mean+by+data+mining+with+example+What+are+the+benefits+of+it">What do you mean by data mining with example? What are the benefits of it?</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%B0-chapter-9-content-data--business-process-management">🧰 <strong>Chapter 9: Content, Data &amp; Business Process Management</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=Describe+the+content+management+system.">Describe the content management system.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+on+content+management+system.">Describe on content management system.</a></li>
+<li><a href="https://www.google.com/search?q=Explain+about+business+process+management.">Explain about business process management.</a></li>
+<li><a href="https://www.google.com/search?q=Define+Transaction+Processing+System+(TPS).+Explain+TPS+with+an+example.">Define Transaction Processing System (TPS). Explain TPS with an example.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+various+functional+business+systems.">Describe various functional business systems.</a></li>
+<li><a href="https://www.google.com/search?q=Define+Customer+Relationship+Management+(CRM).+Explain+various+phases+of+CRM.">Define Customer Relationship Management (CRM). Explain various phases of CRM.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+enterprise+collaboration+system+(ECS)+What+are+the+major+goals+of+an+ECS">What is enterprise collaboration system (ECS)? What are the major goals of an ECS?</a></li>
+<li><a href="https://www.google.com/search?q=What+are+the+major+goals+of+an+ECS">What are the major goals of an ECS?</a></li>
+<li><a href="https://www.google.com/search?q=Discuss+about+data+vasodilation+with+an+example.">Discuss about data vasodilation with an example.</a></li>
+</ol>
+<hr>
+<h2 id="%F0%9F%A7%B1-chapter-10-infrastructure-network--security">🧱 <strong>Chapter 10: Infrastructure, Network &amp; Security</strong></h2>
+<ol>
+<li><a href="https://www.google.com/search?q=Describe+four+levels+of+IT+infrastructure.">Describe four levels of IT infrastructure.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+value+chain+analysis+technique.">Describe value chain analysis technique.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+various+layers+of+the+TCP/IP+model.">Describe the various layers of the TCP/IP model.</a></li>
+<li><a href="https://www.google.com/search?q=What+is+network+topology+Explain+Ring+and+Mesh+network+topology.">What is network topology? Explain Ring and Mesh network topology.</a></li>
+<li><a href="https://www.google.com/search?q=Describe+the+various+tools+of+security+management+of+information+system.">Describe the various tools of security management of information system.</a></li>
+<li><a href="https://www.google.com/search?q=How+information+security+is+ensured+in+IS">How information security is ensured in IS?</a></li>
+</ol>
+<hr>
+
+</body>
+</html>
